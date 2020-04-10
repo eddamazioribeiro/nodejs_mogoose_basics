@@ -2,8 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var BookSchema = new Schema({
+    slug: {
+        type: String,
+        unique: true,
+        index: true,
+        trim: true,
+        lowercase: true
+    },
     title: String,
-    authot: String,
+    author: String,
     category: String
 });
 
