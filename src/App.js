@@ -62,6 +62,19 @@ app.get('/books', (req, res) => {
     })
 });
 
+app.get('/book/:slug', (req, res) => {
+    var {slug} = req.params;
+
+    Book.findOne({slug})
+    .exec((err, book) => {
+        if(err){
+            res.status(404).send(`Error retrieving book\n ${err}`);
+        } else {
+            res.json(book);
+        }
+    });
+});
+
 // running the app
 app.listen(PORT, () =>{
     console.log(`App listening on port ${PORT}`)
