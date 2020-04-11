@@ -51,6 +51,17 @@ app.post('/book', (req, res) => {
     });
 });
 
+app.get('/books', (req, res) => {
+    Book.find({})
+    .exec((err, books) => {
+        if(err){
+            res.status(404).send(`Error retrieving information from database\n ${err}`);
+        } else {
+            res.json(books);
+        }
+    })
+});
+
 // running the app
 app.listen(PORT, () =>{
     console.log(`App listening on port ${PORT}`)
