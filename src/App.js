@@ -46,7 +46,7 @@ app.post('/book', (req, res) => {
         if(err){
             res.status(400).json({error: `Error creating new post\n ${err}`});
         } else {
-            res.json(book);
+            res.status(201).json(book);
         }
     });
 });
@@ -57,7 +57,7 @@ app.get('/books', (req, res) => {
         if(err){
             res.status(404).send(`Error retrieving information from database\n ${err}`);
         } else {
-            res.json(books);
+            res.status(200).json(books);
         }
     })
 });
@@ -70,7 +70,21 @@ app.get('/book/:slug', (req, res) => {
         if(err){
             res.status(404).send(`Error retrieving book\n ${err}`);
         } else {
-            res.json(book);
+            res.status(200).json(book);
+        }
+    });
+});
+
+app.put('/book/:slug', (req, res) => {
+    var {slug} = req.params;
+    var {title, author, category} = req.body;
+
+    Book.findOneAndUpdate({slug}, {title, author, category}, {new: true})
+    .exec((err, newBook) => {
+        if(err){
+            res.status(404).send(`Error retrieving book\n ${err}`);
+        } else {
+            res.status(200).json(newBook);
         }
     });
 });
