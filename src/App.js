@@ -89,6 +89,24 @@ app.put('/book/:slug', (req, res) => {
     });
 });
 
+app.delete('/book/:slug', (req, res) => {
+    var {slug} = req.params;
+    console.log(slug);
+
+    Book.findOneAndRemove({slug})
+    .exec((err, book) =>{
+        console.log(err);
+        console.log(book);
+        if(err){
+            console.log(json(`Error deleting book from database\n ${err}`));
+            res.status(404).json(`Error deleting book from database\n ${err}`);
+        } else {
+            console.log(book);            
+            res.status(200).json(book);
+        }
+    })
+});
+
 // running the app
 app.listen(PORT, () =>{
     console.log(`App listening on port ${PORT}`)
