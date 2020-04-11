@@ -29,6 +29,9 @@ mongoose.connect(DB, {
 // middleware
 app.use(morgan('dev'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 // endpoints
 app.get('/', (req, res) =>{
