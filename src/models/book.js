@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var BookSchema = new Schema({
+var bookSchema = new Schema({
     slug: {
         type: String,
         unique: true,
@@ -14,4 +14,4 @@ var BookSchema = new Schema({
     category: String
 });
 
-module.exports = mongoose.model('Book', BookSchema);
+module.exports = mongoose.model('book', bookSchema);

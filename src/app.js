@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const slugify = require('slugify');
 
 const dotenv = require('dotenv');
-const Book = require('./models/Book');
+const bookSchema = require('./models/book');
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -41,11 +41,10 @@ app.get('/', (req, res) =>{
 });
 
 app.post('/book', (req, res) => {
-    console.log(req.body);
     var {title, author, category} = req.body;
     var slug = slugify(title);
 
-    Book.create({slug, title, author, category}, (err, book) => {
+    bookSchema.create({slug, title, author, category}, (err, book) => {
         if(err){
             res.status(400).json({error: `Error creating new post\n ${err}`});
         } else {
@@ -55,7 +54,7 @@ app.post('/book', (req, res) => {
 });
 
 app.get('/books', (req, res) => {
-    Book.find({})
+    bookSchema.find({})
     .exec((err, books) => {
         if(err){
             res.status(404).send(`Error retrieving information from database\n ${err}`);
@@ -68,7 +67,7 @@ app.get('/books', (req, res) => {
 app.get('/book/:slug', (req, res) => {
     var {slug} = req.params;
 
-    Book.findOne({slug})
+    bookSchema.findOne({slug})
     .exec((err, book) => {
         if(err){
             res.status(404).send(`Error retrieving book\n ${err}`);
@@ -82,7 +81,7 @@ app.put('/book/:slug', (req, res) => {
     var {slug} = req.params;
     var {title, author, category} = req.body;
 
-    Book.findOneAndUpdate({slug}, {title, author, category}, {new: true})
+    bookSchema.findOneAndUpdate({slug}, {title, author, category}, {new: true})
     .exec((err, newBook) => {
         if(err){
             res.status(404).send(`Error retrieving book\n ${err}`);
@@ -94,11 +93,9 @@ app.put('/book/:slug', (req, res) => {
 
 app.delete('/book/:slug', (req, res) => {
     var {slug} = req.params;
-    console.log(slug);
 
-    Book.findOneAndRemove({slug})
+    bookSchema.findOneAndRemove({slug})
     .exec((err, book) =>{
-        console.log(err);
         console.log(book);
         if(err){
             console.log(json(`Error deleting book from database\n ${err}`));
